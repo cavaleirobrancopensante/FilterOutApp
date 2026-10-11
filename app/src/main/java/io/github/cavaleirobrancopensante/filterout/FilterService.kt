@@ -38,8 +38,8 @@ class FilterService : AccessibilityService() {
     private var recognizer: TextRecognizer? = null
     private var ocrBusy = false
     private var lastOcrAt = 0L
-    /** Ignore the screen briefly after leaving, while the old app animates away. */
-    private var quietUntil = 0L
+    /** Anti-loop guard: no blocking for 5 seconds after the block screen is dismissed. */
+    private val gate = BlockGate(clock = { SystemClock.uptimeMillis() })
 
     private val prefsListener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ ->
         reloadSettings()
@@ -64,7 +64,7 @@ class FilterService : AccessibilityService() {
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (event == null || matcher.isEmpty || overlay.isShowing) return
         if (event.packageName == packageName) return
-        if (SystemClock.uptimeMillis() < quietUntil) return
+        if (gate.inGrace()) return
 
         // Wait for the screen to settle a little before reading it.
         handler.removeCallbacks(scanTextTask)
@@ -161,16 +161,21 @@ class FilterService : AccessibilityService() {
     // ---- Blocking ---------------------------------------------------------------
 
     private fun block() {
-        if (overlay.isShowing) return
+        // Every path to the block screen goes through here, including scans that
+        // were already running when "Leave" was tapped, so the grace period
+        // can't be bypassed.
+        if (overlay.isShowing || !gate.mayBlock()) return
         handler.removeCallbacks(scanTextTask)
         handler.removeCallbacks(scanImageTask)
         overlay.show()
     }
 
     private fun leave() {
-        quietUntil = SystemClock.uptimeMillis() + QUIET_AFTER_LEAVE_MS
-        performGlobalAction(GLOBAL_ACTION_HOME)
+        gate.dismissed()
+        handler.removeCallbacks(scanTextTask)
+        handler.removeCallbacks(scanImageTask)
         overlay.hide()
+        performGlobalAction(GLOBAL_ACTION_HOME)
     }
 
     private fun ownAppInFront(): Boolean =
@@ -190,7 +195,6 @@ class FilterService : AccessibilityService() {
         const val TEXT_DELAY_MS = 250L
         const val IMAGE_DELAY_MS = 900L
         const val MIN_OCR_GAP_MS = 1500L
-        const val QUIET_AFTER_LEAVE_MS = 1500L
         const val MAX_NODES = 4000
     }
 }
