@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="brand">#2F5D50</color>
+    <color name="status_on">#2E7D32</color>
+    <color name="status_off">#C62828</color>
+    <color name="overlay_bg">#FF101814</color>
+    <color name="overlay_text">#FFFFFFFF</color>
+    <color name="overlay_text_dim">#B3FFFFFF</color>
+    <color name="icon_fg">#FFFFFFFF</color>
+</resources>
