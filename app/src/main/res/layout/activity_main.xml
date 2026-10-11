@@ -150,6 +150,13 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
+        <Button
+            android:id="@+id/starter_button"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_starter" />
+
         <TextView
             android:id="@+id/empty_text"
             android:layout_width="match_parent"

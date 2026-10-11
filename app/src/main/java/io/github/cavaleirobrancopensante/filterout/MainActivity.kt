@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         store = WordStore(this)
+        store.seedStarterWordsOnce()
 
         statusText = findViewById(R.id.status_text)
         statusButton = findViewById(R.id.status_button)
@@ -68,6 +69,16 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.add_button).setOnClickListener { add() }
         input.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) { add(); true } else false
+        }
+
+        findViewById<Button>(R.id.starter_button).setOnClickListener {
+            val added = store.addStarterWords()
+            Toast.makeText(
+                this,
+                resources.getQuantityString(R.plurals.starter_added, added, added),
+                Toast.LENGTH_SHORT
+            ).show()
+            renderWords()
         }
 
         showWordsButton.setOnClickListener {
