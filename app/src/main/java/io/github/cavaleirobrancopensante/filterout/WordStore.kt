@@ -18,6 +18,21 @@ class WordStore(context: Context) {
         get() = prefs.getBoolean(KEY_OCR, true)
         set(value) = prefs.edit().putBoolean(KEY_OCR, value).apply()
 
+    /** Adds the starter list once, the first time the app is opened. */
+    fun seedStarterWordsOnce() {
+        if (prefs.getBoolean(KEY_SEEDED, false)) return
+        words = words + StarterWords.all
+        prefs.edit().putBoolean(KEY_SEEDED, true).apply()
+    }
+
+    /** Adds back any starter words that were removed. Returns how many were added. */
+    fun addStarterWords(): Int {
+        val current = words
+        val missing = StarterWords.all - current
+        if (missing.isNotEmpty()) words = current + missing
+        return missing.size
+    }
+
     fun add(word: String): Boolean {
         val clean = word.trim().lowercase()
         if (clean.trim('*').isBlank()) return false
@@ -34,5 +49,6 @@ class WordStore(context: Context) {
     companion object {
         const val KEY_WORDS = "words"
         const val KEY_OCR = "ocr_enabled"
+        const val KEY_SEEDED = "starter_seeded"
     }
 }

@@ -24,10 +24,15 @@
     <string name="already_added">Already in the list</string>
     <string name="show_words">Show</string>
     <string name="hide_words">Hide</string>
-    <string name="empty_list">Your list is empty. Add the words you want blocked.</string>
+    <string name="empty_list">Your list is empty. Add the words you want blocked, or tap the starter list.</string>
     <plurals name="word_count">
         <item quantity="one">%d word</item>
         <item quantity="other">%d words</item>
+    </plurals>
+    <string name="add_starter">Add starter list (English + Portuguese)</string>
+    <plurals name="starter_added">
+        <item quantity="one">Added %d word</item>
+        <item quantity="other">Added %d words</item>
     </plurals>
     <string name="privacy_note">FilterOut has no internet permission, so Android itself stops it from sending anything anywhere. Your list stays on this phone.</string>
 
