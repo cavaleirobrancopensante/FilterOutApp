@@ -1,0 +1,42 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Test word matching
+        run: ./gradlew --no-daemon testDebugUnitTest
+
+      - name: Build APK
+        run: ./gradlew --no-daemon assembleRelease
+
+      - name: Check the APK has no internet permission
+        run: |
+          APK=app/build/outputs/apk/release/app-release.apk
+          AAPT2=$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)aapt2
+          "$AAPT2" dump permissions "$APK" | tee permissions.txt
+          if grep -q "android.permission.INTERNET" permissions.txt; then
+            echo "::error::The APK requests INTERNET permission"
+            exit 1
+          fi
+          cp "$APK" FilterOut.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FilterOut-apk
+          path: FilterOut.apk

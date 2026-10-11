@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FilterOut</string>
+    <string name="tagline">Covers the screen when a banned word appears, so you can think twice.</string>
+
+    <string name="service_label">FilterOut</string>
+    <string name="service_description">Reads the text on your screen, only on this phone, and covers the screen when it finds a word from your banned list. FilterOut has no internet access: nothing it reads ever leaves your phone.</string>
+
+    <string name="status_on">Protection is on</string>
+    <string name="status_off">Protection is off</string>
+    <string name="status_help">FilterOut works as an Accessibility service. Open Accessibility settings, tap FilterOut (sometimes under \"Downloaded apps\" or \"Installed apps\") and switch it on. If the switch is greyed out, see the help in the README.</string>
+    <string name="turn_on">Turn on</string>
+    <string name="open_settings">Accessibility settings</string>
+
+    <string name="ocr_title">Read text inside images</string>
+    <string name="ocr_hint">Also checks pictures and video frames for banned words, using text recognition on the phone. Uses a bit more battery.</string>
+    <string name="ocr_unsupported">Needs Android 11 or newer.</string>
+
+    <string name="banned_words">Banned words</string>
+    <string name="wildcard_help">A word blocks only when it appears as a whole word. Add * to widen it: porn* also catches pornography, *porn* catches it anywhere. Accents and look-alikes such as p0rn or $ex are caught automatically. Phrases work too.</string>
+    <string name="word_hint">Add a word or phrase</string>
+    <string name="add">Add</string>
+    <string name="remove">Remove</string>
+    <string name="already_added">Already in the list</string>
+    <string name="show_words">Show</string>
+    <string name="hide_words">Hide</string>
+    <string name="empty_list">Your list is empty. Add the words you want blocked.</string>
+    <plurals name="word_count">
+        <item quantity="one">%d word</item>
+        <item quantity="other">%d words</item>
+    </plurals>
+    <string name="privacy_note">FilterOut has no internet permission, so Android itself stops it from sending anything anywhere. Your list stays on this phone.</string>
+
+    <string name="blocked_title">Think twice.</string>
+    <string name="blocked_body">This screen contained a word from your banned list.</string>
+    <string name="leave">Leave</string>
+    <string name="leave_in">Leave (%d)</string>
+</resources>
